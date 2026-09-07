@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>การจดบันทึกมิเตอร์ - หอพักเพชร</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Prompt', 'sans-serif'] },
+                    colors: {
+                        'phet-bg': '#F4F5F7',
+                        'sidebar-bg': '#FFFFFF',
+                        'phet-orange': '#D35400',
+                        'btn-green': '#22C55E',
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body { background-color: #F8F9FB; }
+        /* สไตล์สำหรับปุ่มเมนูด้านซ้าย */
+        .menu-item {
+            transition: all 0.2s ease-in-out;
+            border-left: 4px solid transparent;
+        }
+        .menu-item:hover {
+            background-color: #FFF3EB;
+            color: #D35400;
+        }
+        .menu-active {
+            background-color: #FFF3EB;
+            color: #D35400;
+            border-left: 4px solid #D35400;
+            font-weight: 500;
+            border-radius: 0 0.5rem 0.5rem 0;
+            margin-right: 1rem;
+        }
+        /* Custom Input มิเตอร์ */
+        .meter-input {
+            width: 80px;
+            background-color: #DDF3FE; /* สีฟ้าอ่อนแบบในรูป */
+            border: 1px solid #B8E4FD;
+            border-radius: 6px;
+            text-align: center;
+            padding: 4px 0;
+            outline: none;
+            color: #333;
+        }
+        .meter-input:focus {
+            border-color: #38BDF8;
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+        }
+    </style>
+</head>
+<body class="text-gray-800 font-sans flex h-screen overflow-hidden">
+
+    <!-- Sidebar (แถบเมนูด้านซ้าย) -->
+    <aside class="w-64 bg-sidebar-bg border-r border-gray-100 flex flex-col justify-between h-full py-6 shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
+        <div>
+            <!-- Logo -->
+            <div class="flex items-center space-x-3 px-6 mb-10">
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center">
+                    <!-- ไอคอนเพชร -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 3h12l4 6-10 12L2 9l4-6z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2 9h20"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 21V9"/><path stroke-linecap="round" stroke-linejoin="round" d="M18 3l-6 6"/><path stroke-linecap="round" stroke-linejoin="round" d="M6 3l6 6"/>
+                    </svg>
+                </div>
+                <div class="w-0.5 h-6 bg-phet-orange rounded-full"></div>
+                <h1 class="text-xl font-bold tracking-wide text-gray-900">หอพักเพชร</h1>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="space-y-2 pr-4">
+                <a href="#" class="menu-item flex items-center space-x-4 px-6 py-3 text-gray-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+                    <span>หน้าหลัก</span>
+                </a>
+                <a href="#" class="menu-active flex items-center space-x-4 px-6 py-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+                    <span>การจดบันทึกมิเตอร์</span>
+                </a>
+                <a href="#" class="menu-item flex items-center space-x-4 px-6 py-3 text-gray-500 rounded-r-lg mr-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                    <span>การทำบิล</span>
+                </a>
+                <a href="#" class="menu-item flex items-center space-x-4 px-6 py-3 text-gray-500 rounded-r-lg mr-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+                    <span>การจัดการห้อง</span>
+                </a>
+                <a href="#" class="menu-item flex items-center space-x-4 px-6 py-3 text-gray-500 rounded-r-lg mr-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+                    <span>การแจ้งเรื่อง</span>
+                </a>
+            </nav>
+        </div>
+        
+        <!-- Log out Button -->
+        <button class="menu-item flex items-center space-x-4 px-6 py-3 text-gray-500 mt-auto w-full text-left rounded-r-lg mr-4 hover:bg-gray-50 hover:text-gray-800">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+            <span>Log out</span>
+        </button>
+    </aside>
+
+    <!-- Main Content (พื้นที่เนื้อหาหลัก) -->
+    <main class="flex-1 flex flex-col overflow-y-auto">
+        <!-- Top Bar -->
+        <header class="flex justify-end items-center px-10 py-6 space-x-4">
+            <!-- กระดิ่งแจ้งเตือน -->
+            <button class="relative p-2.5 bg-white rounded-full shadow-sm hover:shadow transition border border-gray-100 text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+                <span class="absolute top-1.5 right-2 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+            </button>
+            <!-- Profile -->
+            <button class="flex items-center space-x-2 bg-white border border-gray-100 rounded-full px-4 py-2 shadow-sm hover:shadow transition">
+                <div class="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
+                </div>
+                <span class="text-sm font-medium text-gray-700">Test</span>
+            </button>
+        </header>
+
+        <!-- Content Area -->
+        <div class="px-10 pb-10 max-w-6xl w-full mx-auto">
+            
+            <!-- Page Title -->
+            <h2 class="text-3xl font-bold text-gray-800 mb-8">การจดบันทึกมิเตอร์</h2>
+
+            <!-- Action Bar (ตัวกรอง และ ค้นหา) -->
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+                <!-- ฝั่งซ้าย: Dropdown วันที่ -->
+                <div class="flex space-x-3">
+                    <div class="relative bg-white border border-gray-300 rounded-xl px-4 py-2 flex items-center cursor-pointer shadow-sm min-w-[140px]">
+                        <span class="text-gray-600 font-medium">เดือน เมษายน</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    </div>
+                    <div class="relative bg-white border border-gray-300 rounded-xl px-4 py-2 flex items-center cursor-pointer shadow-sm min-w-[100px]">
+                        <span class="text-gray-600 font-medium">2569</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    </div>
+                    <button class="bg-phet-orange text-white px-6 py-2 rounded-xl font-medium hover:bg-orange-600 transition shadow-sm">
+                        เลือก
+                    </button>
+                </div>
+
+                <!-- ฝั่งขวา: ค้นหาห้อง -->
+                <div class="flex space-x-3 w-full md:w-auto">
+                    <div class="relative w-full md:w-64">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                        </div>
+                        <input type="text" class="bg-white border border-gray-300 text-gray-700 text-sm rounded-full focus:ring-phet-orange focus:border-phet-orange block w-full pl-10 p-2.5 shadow-sm outline-none" placeholder="ค้นหาเลขห้อง">
+                    </div>
+                    <button class="bg-phet-orange text-white px-6 py-2 rounded-full font-medium hover:bg-orange-600 transition shadow-sm whitespace-nowrap">
+                        ค้นหา
+                    </button>
+                </div>
+            </div>
+
+            <!-- Table Container -->
+            <div class="bg-white rounded-[20px] shadow-sm border border-gray-100 overflow-hidden">
+                <table class="w-full text-center border-collapse">
+                    <thead class="bg-gray-50/50 border-b border-gray-100 text-gray-700">
+                        <tr>
+                            <th class="py-5 px-6 font-medium w-[15%]">ห้อง</th>
+                            <th class="py-5 px-6 font-medium w-[25%]">เลขมิเตอร์เดือนก่อนหน้า</th>
+                            <th class="py-5 px-6 font-medium w-[25%]">เลขมิเตอร์เดือนนี้</th>
+                            <th class="py-5 px-6 font-medium w-[15%]">หน่วยใช้</th>
+                            <th class="py-5 px-6 font-medium w-[15%]">คิดเป็นเงิน</th>
+                            <th class="py-5 px-6 font-medium w-[15%]"></th> <!-- ช่องว่างสำหรับปุ่ม -->
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-600">
+                        <!-- แถว 1 -->
+                        <tr class="border-b border-gray-50 hover:bg-gray-50/30 transition-colors">
+                            <td class="py-4 px-6 font-medium">23A</td>
+                            <td class="py-4 px-6">0</td>
+                            <td class="py-4 px-6">
+                                <input type="text" class="meter-input" value="">
+                            </td>
+                            <td class="py-4 px-6 text-gray-400">0</td>
+                            <td class="py-4 px-6 text-red-500 font-medium">0</td>
+                            <td class="py-4 px-6 pr-8 text-right">
+                                <button class="bg-btn-green text-white px-6 py-1.5 rounded-lg text-sm font-medium hover:bg-green-600 transition shadow-sm">
+                                    บันทึก
+                                </button>
+                            </td>
+                        </tr>
+                        <!-- แถว 2 -->
+                        <tr class="border-b border-gray-50 hover:bg-gray-50/30 transition-colors">
+                            <td class="py-4 px-6 font-medium">12B</td>
+                            <td class="py-4 px-6">0</td>
+                            <td class="py-4 px-6">
+                                <input type="text" class="meter-input" value="">
+                            </td>
+                            <td class="py-4 px-6 text-gray-400">0</td>
+                            <td class="py-4 px-6 text-red-500 font-medium">0</td>
+                            <td class="py-4 px-6 pr-8 text-right">
+                                <button class="bg-btn-green text-white px-6 py-1.5 rounded-lg text-sm font-medium hover:bg-green-600 transition shadow-sm">
+                                    บันทึก
+                                </button>
+                            </td>
+                        </tr>
+                        <!-- แถว 3 -->
+                        <tr class="hover:bg-gray-50/30 transition-colors">
+                            <td class="py-4 px-6 font-medium">67C</td>
+                            <td class="py-4 px-6">0</td>
+                            <td class="py-4 px-6">
+                                <input type="text" class="meter-input" value="">
+                            </td>
+                            <td class="py-4 px-6 text-gray-400">0</td>
+                            <td class="py-4 px-6 text-red-500 font-medium">0</td>
+                            <td class="py-4 px-6 pr-8 text-right">
+                                <button class="bg-btn-green text-white px-6 py-1.5 rounded-lg text-sm font-medium hover:bg-green-600 transition shadow-sm">
+                                    บันทึก
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>
